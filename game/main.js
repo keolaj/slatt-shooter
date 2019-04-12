@@ -82,9 +82,10 @@ class Player {
     player = new PIXI.extras.AnimatedSprite(sheet.animations["tile"]);
     player.anchor.x = 0.5;
     player.anchor.y = 0.5;
+    player.position.set(window.width * 0.2, window.height * 0.4)
+    entities.addChild(player);
   }
   update() {
 
   }
-  entities.addChild(player);
 }
