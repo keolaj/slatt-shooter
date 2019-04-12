@@ -1,8 +1,3 @@
-imgs = {
-PLAYER: "sprite.png"
-}
-
-
 //Aliases
 let Application = PIXI.Application,
   Container = PIXI.Container,
@@ -49,7 +44,6 @@ var score = 0;
 var scoreText;
 var gameOver = false;
 var gameLoopID = undefined;
-var state = play;
 var highScore = 0;
 var laserCreationCooldown = 50; //(Math.random() * 1000) + 100;
 var powerUpCreationCooldown = 80;
@@ -58,24 +52,20 @@ var slowMoCooldown = slowMoMaximumCooldown;
 var slowMo = false;
 
 loader
-  .add([imgs.PLAYER, imgs.ENEMY_0, imgs.BULLET,
-    imgs.HEALTH_HEART, imgs.RAPID_POWERUP, imgs.RESTART_BUTTON,
-    imgs.LASER_WARNING, imgs.ROCKET, imgs.EXPLOSION_0,
-    imgs.EXPLOSION_1, imgs.EXPLOSION_2, imgs.EXPLOSION_3,
-    imgs.SMOKE_PIECE, imgs.SLOWMO_POWERUP
-  ])
-  .on("progress", loadProgressHandler)
+  .add(["assets/imgs/playersprite/spritesheet.json"])
+  .on("progress")
   .load(loadFinished);
 
 function loadFinished() {
   init();
   gameLoop();
 }
+
 function init() {
   tink = new Tink(PIXI, app.renderer.view);
   tink.makePointer();
   createPlayer();
-  
+
 }
 
 function gameLoop() {
@@ -83,9 +73,9 @@ function gameLoop() {
   tink.update();
   // Get mouse pos
   mousePos = app.renderer.plugins.interaction.mouse.global;
-  
+
   // Call next animation frame
   requestAnimationFrame(gameLoop);
-  
+
   state(delta);
 }
