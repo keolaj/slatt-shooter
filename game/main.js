@@ -39,7 +39,7 @@ var score = 0;
 var scoreText;
 var gameOver = false;
 var gameLoopID = undefined;
-var player;
+var state = play;
 
 
 
@@ -61,6 +61,7 @@ function init() {
   app.stage.addChild(entities);
   app.stage.addChild(gui);
   app.stage.addChild(particles);
+  state = play;
   player = new Player();
 
 }
@@ -68,6 +69,8 @@ function init() {
 function gameLoop() {
   delta = app.ticker.deltaTime;
   tink.update();
+  state(delta);
+  
   // Get mouse pos
   mousePos = app.renderer.plugins.interaction.mouse.global;
 
@@ -79,11 +82,15 @@ class Player {
   constructor() {
     let sheet = PIXI.loader.resources["assets/imgs/playersprite/spritesheet.json"].spritesheet;
     console.log(sheet.animations);
-    player = new PIXI.extras.AnimatedSprite(sheet.animations["tile"]);
+    player = new PIXI.extras.AnimatedSprite(sheet.animations["tile"], true);
     player.anchor.x = 0.5;
     player.anchor.y = 0.5;
-    player.position.set(window.width * 0.2, window.height * 0.4)
+    player.x = app.renderer.width / 2;
+    player.targetY = app.renderer.height - (app.renderer.height * 0.1);
+    player.y = app.renderer.height - (app.renderer.height * 0.1);
+    player.scale.set(5, 5);
     entities.addChild(player);
+    console.log(player)
   }
   update() {
 
