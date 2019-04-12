@@ -16,7 +16,6 @@ const app = new PIXI.Application({
   transparent: false, // default: false
   resolution: 1 // default: 1
 });
-forceCanvas: true,
   app.renderer.view.style.position = "absolute";
 app.renderer.view.style.display = "block";
 app.renderer.autoResize = true;
@@ -29,10 +28,6 @@ document.body.appendChild(app.view);
 var tink; //new Tink(PIXI, app.renderer.view);
 var mousePos = app.renderer.plugins.interaction.mouse.global;
 var player;
-var bullets = [];
-var enemies = [];
-var lasers = [];
-var updatable = [];
 var healthBar = new Container();
 var entities = new Container();
 var particles = new Container();
@@ -44,17 +39,14 @@ var score = 0;
 var scoreText;
 var gameOver = false;
 var gameLoopID = undefined;
-var highScore = 0;
-var laserCreationCooldown = 50; //(Math.random() * 1000) + 100;
-var powerUpCreationCooldown = 80;
-var slowMoMaximumCooldown = 400;
-var slowMoCooldown = slowMoMaximumCooldown;
-var slowMo = false;
+var player;
 
-loader
-  .add(["assets/imgs/playersprite/spritesheet.json"])
-  .on("progress")
-  .load(loadFinished);
+
+
+PIXI.loader.add([
+  "assets/imgs/playersprite/spritesheet.json",
+  "assets/imgs/playersprite/spritesheet.png"
+]).load(loadFinished);
 
 function loadFinished() {
   init();
@@ -64,7 +56,7 @@ function loadFinished() {
 function init() {
   tink = new Tink(PIXI, app.renderer.view);
   tink.makePointer();
-  createPlayer();
+  player = new Player();
 
 }
 
@@ -77,5 +69,16 @@ function gameLoop() {
   // Call next animation frame
   requestAnimationFrame(gameLoop);
 
-  state(delta);
+}
+class Player {
+  constructor() {
+    let sheet = PIXI.loader.resources["assets/imgs/playersprite/spritesheet.json"].spritesheet;
+    console.log(sheet.animations);
+    player = new PIXI.extras.AnimatedSprite(sheet.animations["tile"]);
+    player.anchor.x = 0.5;
+    player.anchor.y = 0.5;
+  }
+  update() {
+
+  }
 }

@@ -1,4 +1,22 @@
-createPlayer = new function () {
+class Player {
+  constructor() {
+    let sheet = PIXI.loader.resources["assets/imgs/playersprite/spritesheet.json"].spritesheet;
+    console.log(sheet.animations);
+    player = new PIXI.extras.AnimatedSprite(sheet.animations["tile"]);
+    player.anchor.x = 0.5;
+    player.anchor.y = 0.5;
+  }
+  update() {
+
+  }
+}
+
+
+
+
+
+
+/*createPlayer = new function () {
   // Create PIXI.Sprite from Image
   let sheet = PIXI.loader.resources["assets/imgs/playersprite/spritesheet.json"].spritesheet;
   console.log(sheet)
@@ -29,3 +47,4 @@ createPlayer = new function () {
     this.x += xSpeed;
   }
 }
+*/
