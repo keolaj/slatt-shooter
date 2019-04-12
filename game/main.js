@@ -16,7 +16,7 @@ const app = new PIXI.Application({
   transparent: false, // default: false
   resolution: 1 // default: 1
 });
-  app.renderer.view.style.position = "absolute";
+app.renderer.view.style.position = "absolute";
 app.renderer.view.style.display = "block";
 app.renderer.autoResize = true;
 app.renderer.resize(window.innerWidth, window.innerHeight)
@@ -56,6 +56,11 @@ function loadFinished() {
 function init() {
   tink = new Tink(PIXI, app.renderer.view);
   tink.makePointer();
+  entities = new Container();
+  gui = new Container();
+  app.stage.addChild(entities);
+  app.stage.addChild(gui);
+  app.stage.addChild(particles);
   player = new Player();
 
 }
@@ -81,4 +86,5 @@ class Player {
   update() {
 
   }
+  entities.addChild(player);
 }
