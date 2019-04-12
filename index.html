@@ -5,25 +5,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>X2 Racing</title>
-    <script src="vendor/pixi.js"></script>
+    <title>Slatt Shooter</title>
     <!-- CSS -->
     <link rel="stylesheet" href="assets/css/style.css">
     <!-- JS -->
+    <script src="vendor/pixi.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.12.0/matter.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.8.7/pixi.min.js"></script>
     <script
     src="https://code.jquery.com/jquery-3.4.0.min.js"
     integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
     crossorigin="anonymous"></script>
-
+    <style>* {padding: 0; margin: 0}</style>
+    <script>
+        "use strict";var _createClass=(function(){function defineProperties(target,props){for(var i=0;i<props.length;i++){var descriptor=props[i];descriptor.enumerable=descriptor.enumerable||!1;descriptor.configurable=!0;if("value" in descriptor)descriptor.writable=!0;Object.defineProperty(target,descriptor.key,descriptor)}}return function(Constructor,protoProps,staticProps){if(protoProps)defineProperties(Constructor.prototype,protoProps);if(staticProps)defineProperties(Constructor,staticProps);return Constructor}})();function _classCallCheck(instance,Constructor){if(!(instance instanceof Constructor)){throw new TypeError("Cannot call a class as a function")}}
+        var Tink=(function(){function Tink(PIXI,element){var scale=arguments.length<=2||arguments[2]===undefined?1:arguments[2];_classCallCheck(this,Tink);this.element=element;this._scale=scale;this.draggableSprites=[];this.pointers=[];this.buttons=[];this.PIXI=PIXI;this.TextureCache=this.PIXI.utils.TextureCache;this.AnimatedSprite=this.PIXI.extras.MovieClip;this.Texture=this.PIXI.Texture}
+        _createClass(Tink,[{key:"makeDraggable",value:function makeDraggable(){var _this=this;for(var _len=arguments.length,sprites=Array(_len),_key=0;_key<_len;_key++){sprites[_key]=arguments[_key]}
+        if(!(sprites[0]instanceof Array)){sprites.forEach(function(sprite){_this.draggableSprites.push(sprite);if(sprite.draggable===undefined){sprite.draggable=!0;sprite._localDraggableAllocation=!0}})}
+        else{var spritesArray=sprites[0];if(spritesArray.length>0){for(var i=spritesArray.length-1;i>=0;i--){var sprite=spritesArray[i];this.draggableSprites.push(sprite);if(sprite.draggable===undefined){sprite.draggable=!0;sprite._localDraggableAllocation=!0}}}}}},{key:"makeUndraggable",value:function makeUndraggable(){var _this2=this;for(var _len2=arguments.length,sprites=Array(_len2),_key2=0;_key2<_len2;_key2++){sprites[_key2]=arguments[_key2]}
+        if(!(sprites[0]instanceof Array)){sprites.forEach(function(sprite){_this2.draggableSprites.splice(_this2.draggableSprites.indexOf(sprite),1);if(sprite._localDraggableAllocation===!0)sprite.draggable=!1})}
+        else{var spritesArray=sprites[0];if(spritesArray.length>0){for(var i=spritesArray.length-1;i>=0;i--){var sprite=spritesArray[i];this.draggableSprites.splice(this.draggableSprites.indexOf(sprite),1);if(sprite._localDraggableAllocation===!0)sprite.draggable=!1}}}}},{key:"makePointer",value:function makePointer(){var element=arguments.length<=0||arguments[0]===undefined?this.element:arguments[0];var scale=arguments.length<=1||arguments[1]===undefined?this.scale:arguments[1];var draggableSprites=this.draggableSprites;var addGlobalPositionProperties=this.addGlobalPositionProperties;var pointer={element:element,_scale:scale,_x:0,_y:0,width:1,height:1,get x(){return this._x/this.scale},get y(){return this._y/this.scale},get centerX(){return this.x},get centerY(){return this.y},get position(){return{x:this.x,y:this.y}},get scale(){return this._scale},set scale(value){this._scale=value},get cursor(){return this.element.style.cursor},set cursor(value){this.element.style.cursor=value},isDown:!1,isUp:!0,tapped:!1,downTime:0,elapsedTime:0,press:undefined,release:undefined,tap:undefined,dragSprite:null,dragOffsetX:0,dragOffsetY:0,_visible:!0,get visible(){return this._visible},set visible(value){if(value===!0){this.cursor="auto"}else{this.cursor="none"}
+        this._visible=value},moveHandler:function moveHandler(event){var element=event.target;this._x=event.pageX-element.offsetLeft;this._y=event.pageY-element.offsetTop;event.preventDefault()},touchmoveHandler:function touchmoveHandler(event){var element=event.target;this._x=event.targetTouches[0].pageX-element.offsetLeft;this._y=event.targetTouches[0].pageY-element.offsetTop;event.preventDefault()},downHandler:function downHandler(event){this.isDown=!0;this.isUp=!1;this.tapped=!1;this.downTime=Date.now();if(this.press)this.press();event.preventDefault()},touchstartHandler:function touchstartHandler(event){var element=event.target;this._x=event.targetTouches[0].pageX-element.offsetLeft;this._y=event.targetTouches[0].pageY-element.offsetTop;this.isDown=!0;this.isUp=!1;this.tapped=!1;this.downTime=Date.now();if(this.press)this.press();event.preventDefault()},upHandler:function upHandler(event){this.elapsedTime=Math.abs(this.downTime-Date.now());if(this.elapsedTime<=200&&this.tapped===!1){this.tapped=!0;if(this.tap)this.tap()}
+        this.isUp=!0;this.isDown=!1;if(this.release)this.release()},touchendHandler:function touchendHandler(event){this.elapsedTime=Math.abs(this.downTime-Date.now());if(this.elapsedTime<=200&&this.tapped===!1){this.tapped=!0;if(this.tap)this.tap()}
+        this.isUp=!0;this.isDown=!1;if(this.release)this.release()},hitTestSprite:function hitTestSprite(sprite){addGlobalPositionProperties(sprite);var hit=!1;var xAnchorOffset=undefined,yAnchorOffset=undefined;if(sprite.anchor!==undefined){xAnchorOffset=sprite.width*sprite.anchor.x;yAnchorOffset=sprite.height*sprite.anchor.y}else{xAnchorOffset=0;yAnchorOffset=0}
+        if(!sprite.circular){var left=sprite.gx-xAnchorOffset,right=sprite.gx+sprite.width-xAnchorOffset,top=sprite.gy-yAnchorOffset,bottom=sprite.gy+sprite.height-yAnchorOffset;hit=this.x>left&&this.x<right&&this.y>top&&this.y<bottom}
+        else{var vx=this.x-(sprite.gx+sprite.width/2-xAnchorOffset),vy=this.y-(sprite.gy+sprite.width/2-yAnchorOffset),distance=Math.sqrt(vx*vx+vy*vy);hit=distance<sprite.width/2}
+        return hit}};element.addEventListener("mousemove",pointer.moveHandler.bind(pointer),!1);element.addEventListener("mousedown",pointer.downHandler.bind(pointer),!1);window.addEventListener("mouseup",pointer.upHandler.bind(pointer),!1);element.addEventListener("touchmove",pointer.touchmoveHandler.bind(pointer),!1);element.addEventListener("touchstart",pointer.touchstartHandler.bind(pointer),!1);window.addEventListener("touchend",pointer.touchendHandler.bind(pointer),!1);element.style.touchAction="none";this.pointers.push(pointer);return pointer}},{key:"addGlobalPositionProperties",value:function addGlobalPositionProperties(sprite){if(sprite.gx===undefined){Object.defineProperty(sprite,"gx",{get:function get(){return sprite.getGlobalPosition().x}})}
+        if(sprite.gy===undefined){Object.defineProperty(sprite,"gy",{get:function get(){return sprite.getGlobalPosition().y}})}}},{key:"updateDragAndDrop",value:function updateDragAndDrop(draggableSprites){if(this.pointers.length===0){this.makePointer(this.element,this.scale)}
+        this.pointers.forEach(function(pointer){if(pointer.isDown){if(pointer.dragSprite===null){for(var i=draggableSprites.length-1;i>-1;i--){var sprite=draggableSprites[i];if(pointer.hitTestSprite(sprite)&&sprite.draggable){pointer.dragOffsetX=pointer.x-sprite.gx;pointer.dragOffsetY=pointer.y-sprite.gy;pointer.dragSprite=sprite;var children=sprite.parent.children;children.splice(children.indexOf(sprite),1);children.push(sprite);draggableSprites.splice(draggableSprites.indexOf(sprite),1);draggableSprites.push(sprite);break}}}
+        else{pointer.dragSprite.x=pointer.x-pointer.dragOffsetX;pointer.dragSprite.y=pointer.y-pointer.dragOffsetY}}
+        if(pointer.isUp){pointer.dragSprite=null}
+        draggableSprites.some(function(sprite){if(pointer.hitTestSprite(sprite)&&sprite.draggable){if(pointer.visible)pointer.cursor="pointer";return!0}else{if(pointer.visible)pointer.cursor="auto";return!1}})})}},{key:"makeInteractive",value:function makeInteractive(o){o.press=o.press||undefined;o.release=o.release||undefined;o.over=o.over||undefined;o.out=o.out||undefined;o.tap=o.tap||undefined;o.state="up";o.action="";o.pressed=!1;o.hoverOver=!1;o.tinkType="";o.enabled=!0;this.buttons.push(o)}},{key:"updateButtons",value:function updateButtons(){var _this3=this;if(this.pointers.length===0){this.makePointer(this.element,this.scale)}
+        this.pointers.forEach(function(pointer){pointer.shouldBeHand=!1;_this3.buttons.forEach(function(o){if(o.enabled){var hit=pointer.hitTestSprite(o);if(pointer.isUp){o.state="up";if(o.tinkType==="button")o.gotoAndStop(0)}
+        if(hit){o.state="over";if(o.totalFrames&&o.totalFrames===3&&o.tinkType==="button"){o.gotoAndStop(1)}
+        if(pointer.isDown){o.state="down";if(o.tinkType==="button"){if(o.totalFrames===3){o.gotoAndStop(2)}else{o.gotoAndStop(1)}}}
+        pointer.shouldBeHand=!0;if(pointer.visible)pointer.cursor="pointer"}else{if(pointer.visible)pointer.cursor="auto"}
+        if(o.state==="down"){if(!o.pressed){if(o.press)o.press();o.pressed=!0;o.action="pressed"}}
+        if(o.state==="over"){if(o.pressed){if(o.release)o.release();o.pressed=!1;o.action="released";if(pointer.tapped&&o.tap)o.tap()}
+        if(!o.hoverOver){if(o.over)o.over();o.hoverOver=!0}}
+        if(o.state==="up"){if(o.pressed){if(o.release)o.release();o.pressed=!1;o.action="released"}
+        if(o.hoverOver){if(o.out)o.out();o.hoverOver=!1}}}});if(pointer.shouldBeHand){pointer.cursor="pointer"}else{pointer.cursor="auto"}})}},{key:"button",value:function button(source){var x=arguments.length<=1||arguments[1]===undefined?0:arguments[1];var y=arguments.length<=2||arguments[2]===undefined?0:arguments[2];var o=undefined;if(typeof source[0]==="string"){if(this.TextureCache[source[0]]){o=this.AnimatedSprite.fromFrames(source)}else{o=this.AnimatedSprite.fromimgs(source)}}
+        else if(source[0]instanceof this.Texture){o=new this.AnimatedSprite(source)}
+        this.makeInteractive(o);o.tinkType="button";o.x=x;o.y=y;return o}},{key:"update",value:function update(){if(this.draggableSprites.length!==0)this.updateDragAndDrop(this.draggableSprites);if(this.buttons.length!==0)this.updateButtons()}},{key:"keyboard",value:function keyboard(keyCode){var key={};key.code=keyCode;key.isDown=!1;key.isUp=!0;key.press=undefined;key.release=undefined;key.downHandler=function(event){if(event.keyCode===key.code){if(key.isUp&&key.press)key.press();key.isDown=!0;key.isUp=!1}
+        event.preventDefault()};key.upHandler=function(event){if(event.keyCode===key.code){if(key.isDown&&key.release)key.release();key.isDown=!1;key.isUp=!0}
+        event.preventDefault()};window.addEventListener("keydown",key.downHandler.bind(key),!1);window.addEventListener("keyup",key.upHandler.bind(key),!1);return key}},{key:"arrowControl",value:function arrowControl(sprite,speed){if(speed===undefined){throw new Error("Please supply the arrowControl method with the speed at which you want the sprite to move")}
+        var upArrow=this.keyboard(38),rightArrow=this.keyboard(39),downArrow=this.keyboard(40),leftArrow=this.keyboard(37);leftArrow.press=function(){sprite.vx=-speed;sprite.vy=0};leftArrow.release=function(){if(!rightArrow.isDown&&sprite.vy===0){sprite.vx=0}};upArrow.press=function(){sprite.vy=-speed;sprite.vx=0};upArrow.release=function(){if(!downArrow.isDown&&sprite.vx===0){sprite.vy=0}};rightArrow.press=function(){sprite.vx=speed;sprite.vy=0};rightArrow.release=function(){if(!leftArrow.isDown&&sprite.vy===0){sprite.vx=0}};downArrow.press=function(){sprite.vy=speed;sprite.vx=0};downArrow.release=function(){if(!upArrow.isDown&&sprite.vx===0){sprite.vy=0}}}},{key:"scale",get:function get(){return this._scale},set:function set(value){this._scale=value;this.pointers.forEach(function(pointer){return pointer.scale=value})}}]);return Tink})()
+      </script>
 </head>
 
 <body>
     
-
-    </script>
-
     <script src="game/main.js"></script>
 
 
