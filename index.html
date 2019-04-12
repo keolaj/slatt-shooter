@@ -9,6 +9,18 @@
 
 </head>
 <body>
-    
+        <script type="text/javascript">
+            
+            var type = "WebGL";
+
+            if (!PIXI.utils.isWebGLSupported()) {
+                type = "canvas";
+            }
+
+            PIXI.utils.sayHello(type);
+
+            var renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.view);
+        </script>
 </body>
 </html>
