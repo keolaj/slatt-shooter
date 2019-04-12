@@ -6,6 +6,7 @@ let Application = PIXI.Application,
   resources = PIXI.loader.resources,
   TextureCache = PIXI.utils.TextureCache,
   Sprite = PIXI.Sprite,
+  maxFrame = 60,
   Rectangle = PIXI.Rectangle,
   Text = PIXI.Text,
   TextStyle = PIXI.TextStyle;
@@ -78,11 +79,16 @@ function gameLoop() {
   requestAnimationFrame(gameLoop);
 
 }
+function play(delta) {
+  player.update(delta);
+}
+
 class Player {
   constructor() {
     let sheet = PIXI.loader.resources["assets/imgs/playersprite/spritesheet.json"].spritesheet;
     console.log(sheet.animations);
     player = new PIXI.extras.AnimatedSprite(sheet.animations["tile"], true);
+    player.play()
     player.anchor.x = 0.5;
     player.anchor.y = 0.5;
     player.x = app.renderer.width / 2;
