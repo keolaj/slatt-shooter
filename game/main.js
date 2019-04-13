@@ -11,8 +11,8 @@ let Application = PIXI.Application,
   Text = PIXI.Text,
   TextStyle = PIXI.TextStyle;
 const app = new PIXI.Application({
-  width: 800, // default: 800
-  height: 600, // default: 600
+  width: 1334, // default: 800
+  height: 750, // default: 600
   antialias: true, // default: false
   transparent: false, // default: false
   resolution: 1 // default: 1
@@ -21,7 +21,7 @@ app.renderer.view.style.position = "absolute";
 app.renderer.view.style.display = "block";
 app.renderer.backgroundColor = 0x22A7F0;
 app.renderer.autoResize = true;
-app.renderer.resize(window.innerWidth, window.innerHeight)
+app.renderer.resize(window.innerWidth, window.innerWidth * .5625)
 PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
 // Creates canvas element, pushes to DOM
 document.body.appendChild(app.view);
@@ -40,11 +40,11 @@ var LEFT_WALL_POSITION = 0;
 var spriteScales = 3;
 var score = 0;
 var scoreText;
+var vid = document.getElementsByTagName("audio")
 var gameOver = false;
 var gameLoopID = undefined;
 var state = play;
 let b = new PIXI.extras.Bump();
-
 
 
 PIXI.loader.add([
@@ -70,6 +70,7 @@ function init() {
   state = play;
   player = new Player();
   enemy = new Enemy();
+  console.log("entities", entities);
 
 }
 

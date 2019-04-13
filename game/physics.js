@@ -18,3 +18,8 @@ collision = function() {
         });
     }
 }
+gravity = function() {
+    for (x in entities.children) {
+        
+    }
+}

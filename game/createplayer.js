@@ -12,7 +12,6 @@ var fireBullets = 20;
 class Player {
   constructor() {
     var sheet = PIXI.loader.resources["assets/imgs/playersprite/spritesheet.json"].spritesheet;
-    console.log(sheet.animations);
     this.sprite = new PIXI.extras.AnimatedSprite(sheet.animations[idle], true);
     this.sprite.idleAnim = new PIXI.extras.AnimatedSprite(sheet.animations[idle], true);
     this.sprite.shootAnim = new PIXI.extras.AnimatedSprite(sheet.animations[shoot], true);
@@ -22,10 +21,10 @@ class Player {
     this.sprite.animationSpeed = .15;
     this.sprite.loop = true;
     this.sprite.anchor.x = 0.5;
-    this.sprite.anchor.y = 0.5;
-    this.sprite.x = app.renderer.width / 6;
+    this.sprite.anchor.y = .5;
+    this.sprite.x = app.renderer.width / 7;
     this.sprite.targetY = app.renderer.height - (app.renderer.height * 0.1);
-    this.sprite.y = app.renderer.height - (app.renderer.height * 0.1);
+    this.sprite.y = app.renderer.height - (app.renderer.height * 0.15);
     this.sprite.scale.set(5, 5);
     this.sprite.smoothness = 5;
 
@@ -58,7 +57,6 @@ class Player {
 
     // add to container
     entities.addChild(this.sprite);
-    console.log(this.sprite)
   }
   update() {
 
@@ -85,13 +83,13 @@ class Player {
   }
   changeAnimation() {
     let newAnim = undefined;
-    if (this.keyState[32]) {
+    if (this.keyState[32] && fireBullets > 0) {
       newAnim = this.sprite.shootAnim;
       this.sprite.animationSpeed = .5;
     } 
     else if (this.keyState[39]) {
       newAnim = this.sprite.walkAnim;
-      this.sprite.animationSpeed = .2;
+      this.sprite.animationSpeed = .25;
     }
     else {
       newAnim = this.sprite.idleAnim;
@@ -103,7 +101,6 @@ class Player {
       this.sprite.textures = this.sprite.currentAnimation.textures;  
       this.sprite.gotoAndStop(0);
       this.sprite.gotoAndPlay(0);
-      console.log(this.sprite.animationSpeed)
     }
   }
 }

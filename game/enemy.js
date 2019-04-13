@@ -11,7 +11,7 @@ class Enemy {
         window.setInterval(function () {
             this.sprite = new PIXI.Sprite(PIXI.loader.resources["assets/imgs/shrek.png"].texture);
             this.sprite.anchor.set(0.5, 0.5)
-            this.sprite.position.set(app.renderer.width * 1.1, app.renderer.height - (app.renderer.height * 0.1));
+            this.sprite.position.set(app.renderer.width * 1.1, app.renderer.height - (app.renderer.height * 0.15));
             this.sprite.scale.set(0.4, 0.4)
 
             Enemy.list.push(this.sprite);
