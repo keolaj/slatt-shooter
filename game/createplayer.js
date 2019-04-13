@@ -2,9 +2,17 @@ class Player {
   constructor() {
     let sheet = PIXI.loader.resources["assets/imgs/playersprite/spritesheet.json"].spritesheet;
     console.log(sheet.animations);
-    player = new PIXI.extras.AnimatedSprite(sheet.animations["tile"]);
+    player = new PIXI.extras.AnimatedSprite(sheet.animations["tile"], true);
+    player.play()
+    player.animationSpeed = .4;
     player.anchor.x = 0.5;
     player.anchor.y = 0.5;
+    player.x = app.renderer.width / 2;
+    player.targetY = app.renderer.height - (app.renderer.height * 0.1);
+    player.y = app.renderer.height - (app.renderer.height * 0.1);
+    player.scale.set(5, 5);
+    entities.addChild(player);
+    console.log(player)
   }
   update() {
 
