@@ -31,7 +31,6 @@ var tink; //new Tink(PIXI, app.renderer.view);
 var mousePos = app.renderer.plugins.interaction.mouse.global;
 var player;
 var enemy;
-var lasers = [];
 var healthBar = new Container();
 var entities = new Container();
 var particles = new Container();
@@ -79,6 +78,10 @@ function gameLoop() {
   tink.update();
   state(delta);
   enemy.update();
+  Laser.list.map((element) =>
+    {
+        element.update();
+    });
   
   // Get mouse pos
   mousePos = app.renderer.plugins.interaction.mouse.global;

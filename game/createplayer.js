@@ -4,8 +4,9 @@ const walking = "walking";
 const shoot = "shoot";
 const die = "die";
 
+
 //amount of bullets
-var fireBullets = 10;
+var fireBullets = 20;
 
 class Player {
   constructor() {
@@ -13,7 +14,7 @@ class Player {
     console.log(sheet.animations);
     this.sprite = new PIXI.extras.AnimatedSprite(sheet.animations[idle], true);
     this.sprite.play();
-    this.sprite.animationSpeed = .2;
+    this.sprite.animationSpeed = .1;
     this.sprite.anchor.x = 0.5;
     this.sprite.anchor.y = 0.5;
     this.sprite.x = app.renderer.width / 6;
@@ -64,7 +65,7 @@ class Player {
       this.fireCooldown++;
 
     if (this.keyState[32] && this.fireCooldown >= this.fireSpeed && fireBullets >= 1) {
-      let rocket = new Laser(this.sprite.position.x, this.sprite.position.y);
+      let laser = new Laser(this.sprite.position.x, this.sprite.position.y);
       this.fireCooldown = 0;
       fireBullets --;
     }
@@ -73,6 +74,7 @@ class Player {
     this.keyState[key.keyCode] = true;
   }
   onKeyUp(key) {
+    this.keyState[key.keyCode] = false;
 
   }
 }
