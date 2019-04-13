@@ -7,7 +7,9 @@ let ani = idle;
 let aniLoop = true;
 
 //amount of bullets
-var fireBullets = 20;
+var fireBullets = 10;
+var jumpVar = 3;
+
 
 class Player {
   constructor() {
@@ -21,10 +23,10 @@ class Player {
     this.sprite.animationSpeed = .15;
     this.sprite.loop = true;
     this.sprite.anchor.x = 0.5;
-    this.sprite.anchor.y = .5;
-    this.sprite.x = app.renderer.width / 7;
+    this.sprite.anchor.y = 0.5;
+    this.sprite.x = 150;
     this.sprite.targetY = app.renderer.height - (app.renderer.height * 0.1);
-    this.sprite.y = app.renderer.height - (app.renderer.height * 0.15);
+    this.sprite.y = 675;
     this.sprite.scale.set(5, 5);
     this.sprite.smoothness = 5;
 
@@ -35,6 +37,16 @@ class Player {
     this.directionX = 0;
     this.directionY = 0;
     this.speed = 8;
+    this.yVelocity = 0;
+    this.jumpAmt = -20;
+    this.jumping = false;
+    this.groundY = 675;
+
+    // Y velocity - When you jump, jump() is called one time, triggering:
+    // this.velocitY += jumpAmt;
+    // update: if (yVelocity >= 0) { yVelocity --; } else { yVelocity = 0; }
+    // if (!jumping && player.Y <= groundY) { playerY = groundY }
+    
 
     //laser variables
     this.fireSpeed = 10;
@@ -63,6 +75,21 @@ class Player {
     this.changeAnimation();
 
     this.updateFire();
+    
+    this.updateMovement();
+
+  }
+
+  updateMovement() {
+    this.sprite.y += this.yVelocity;
+    if (this.sprite.y < this.groundY) {
+      this.yVelocity += 1.2;
+    } else if (this.jumping) {
+      this.yVelocity = 0;
+      this.jumping = false;
+      this.sprite.y = this.groundY
+      jumpVar = 3;
+    }
   }
 
   updateFire() {
@@ -77,6 +104,13 @@ class Player {
   }
   onKeyDown(key) {
     this.keyState[key.keyCode] = true;
+    if (this.keyState[38] == true) {
+      if (jumpVar > 0) {
+        this.yVelocity = 0;
+        this.jump()
+        jumpVar --;
+      }
+    }
   }
   onKeyUp(key) {
     this.keyState[key.keyCode] = false;
@@ -103,7 +137,12 @@ class Player {
       this.sprite.gotoAndPlay(0);
     }
   }
+  jump() {
+    this.jumping = true;
+    this.yVelocity += this.jumpAmt
+  }
 }
+
 
 
 

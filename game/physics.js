@@ -7,11 +7,11 @@ collision = function() {
     if (Laser.list[0] !== undefined) {
         Enemy.list.forEach(function (element, index, array) {
             for (x in Laser.list) {
-                if (element.containsPoint(Laser.list[x].sprite.position)) {
+                if (b.hit(element, Laser.list[x].sprite, true)) {
                     element.destroy();
                     array.splice(index, 1);
                     Laser.list[x].sprite.destroy();
-                    Laser .list.splice(x, 1);
+                    Laser .list.splice(x, 1); 
                     fireBullets += 2;
                 }
             }
@@ -19,7 +19,5 @@ collision = function() {
     }
 }
 gravity = function() {
-    for (x in entities.children) {
-        
-    }
+    
 }

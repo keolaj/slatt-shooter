@@ -21,7 +21,7 @@ app.renderer.view.style.position = "absolute";
 app.renderer.view.style.display = "block";
 app.renderer.backgroundColor = 0x22A7F0;
 app.renderer.autoResize = true;
-app.renderer.resize(window.innerWidth, window.innerWidth * .5625)
+//app.renderer.resize(window.innerWidth, window.innerWidth * .5625)
 PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
 // Creates canvas element, pushes to DOM
 document.body.appendChild(app.view);
@@ -44,6 +44,7 @@ var vid = document.getElementsByTagName("audio")
 var gameOver = false;
 var gameLoopID = undefined;
 var state = play;
+var delta = app.ticker.deltaTime;
 let b = new PIXI.extras.Bump();
 
 
@@ -70,14 +71,13 @@ function init() {
   state = play;
   player = new Player();
   enemy = new Enemy();
-  console.log("entities", entities);
+  console.log("entities", entities.children);
 
 }
 
 function gameLoop() {
-  delta = app.ticker.deltaTime;
   tink.update();
-  state(delta);
+   state(delta);
   enemy.update();
   Laser.list.map((element) =>
     {
@@ -93,4 +93,3 @@ function gameLoop() {
 function play(delta) {
   player.update(delta);
 }
-
