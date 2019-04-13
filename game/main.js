@@ -31,6 +31,7 @@ var tink; //new Tink(PIXI, app.renderer.view);
 var mousePos = app.renderer.plugins.interaction.mouse.global;
 var player;
 var enemy;
+var lasers = [];
 var healthBar = new Container();
 var entities = new Container();
 var particles = new Container();
@@ -43,13 +44,15 @@ var scoreText;
 var gameOver = false;
 var gameLoopID = undefined;
 var state = play;
+let b = new PIXI.extras.Bump();
 
 
 
 PIXI.loader.add([
   "assets/imgs/playersprite/spritesheet.json",
   "assets/imgs/playersprite/spritesheet.png",
-  "assets/imgs/shrek.png"
+  "assets/imgs/shrek.png",
+  "assets/imgs/laser.png"
 ]).load(loadFinished);
 
 function loadFinished() {
@@ -87,5 +90,4 @@ function gameLoop() {
 function play(delta) {
   player.update(delta);
 }
-
 
