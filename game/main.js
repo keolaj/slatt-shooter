@@ -19,6 +19,7 @@ const app = new PIXI.Application({
 });
 app.renderer.view.style.position = "absolute";
 app.renderer.view.style.display = "block";
+app.renderer.backgroundColor = 0x22A7F0;
 app.renderer.autoResize = true;
 app.renderer.resize(window.innerWidth, window.innerHeight)
 PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
@@ -29,6 +30,7 @@ document.body.appendChild(app.view);
 var tink; //new Tink(PIXI, app.renderer.view);
 var mousePos = app.renderer.plugins.interaction.mouse.global;
 var player;
+var enemy;
 var healthBar = new Container();
 var entities = new Container();
 var particles = new Container();
@@ -46,7 +48,8 @@ var state = play;
 
 PIXI.loader.add([
   "assets/imgs/playersprite/spritesheet.json",
-  "assets/imgs/playersprite/spritesheet.png"
+  "assets/imgs/playersprite/spritesheet.png",
+  "assets/imgs/shrek.png"
 ]).load(loadFinished);
 
 function loadFinished() {
@@ -64,6 +67,7 @@ function init() {
   app.stage.addChild(particles);
   state = play;
   player = new Player();
+  enemy = new Enemy();
 
 }
 
@@ -71,6 +75,7 @@ function gameLoop() {
   delta = app.ticker.deltaTime;
   tink.update();
   state(delta);
+  enemy.update();
   
   // Get mouse pos
   mousePos = app.renderer.plugins.interaction.mouse.global;
