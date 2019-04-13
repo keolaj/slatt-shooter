@@ -82,13 +82,12 @@ function gameLoop() {
     {
         element.update();
     });
-  
   // Get mouse pos
   mousePos = app.renderer.plugins.interaction.mouse.global;
 
   // Call next animation frame
   requestAnimationFrame(gameLoop);
-
+  collision();
 }
 function play(delta) {
   player.update(delta);

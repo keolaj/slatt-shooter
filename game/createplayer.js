@@ -3,18 +3,24 @@ const idle = "idle";
 const walking = "walking";
 const shoot = "shoot";
 const die = "die";
-
+let ani = idle;
+let aniLoop = true;
 
 //amount of bullets
 var fireBullets = 20;
 
 class Player {
   constructor() {
-    let sheet = PIXI.loader.resources["assets/imgs/playersprite/spritesheet.json"].spritesheet;
+    var sheet = PIXI.loader.resources["assets/imgs/playersprite/spritesheet.json"].spritesheet;
     console.log(sheet.animations);
     this.sprite = new PIXI.extras.AnimatedSprite(sheet.animations[idle], true);
+    this.sprite.idleAnim = new PIXI.extras.AnimatedSprite(sheet.animations[idle], true);
+    this.sprite.shootAnim = new PIXI.extras.AnimatedSprite(sheet.animations[shoot], true);
+    this.sprite.walkAnim = new PIXI.extras.AnimatedSprite(sheet.animations[walking], true);
+    this.sprite.currentAnimation = this.sprite.idleAnim;
     this.sprite.play();
-    this.sprite.animationSpeed = .1;
+    this.sprite.animationSpeed = .15;
+    this.sprite.loop = true;
     this.sprite.anchor.x = 0.5;
     this.sprite.anchor.y = 0.5;
     this.sprite.x = app.renderer.width / 6;
@@ -56,6 +62,7 @@ class Player {
   }
   update() {
 
+    this.changeAnimation();
 
     this.updateFire();
   }
@@ -75,7 +82,29 @@ class Player {
   }
   onKeyUp(key) {
     this.keyState[key.keyCode] = false;
-
+  }
+  changeAnimation() {
+    let newAnim = undefined;
+    if (this.keyState[32]) {
+      newAnim = this.sprite.shootAnim;
+      this.sprite.animationSpeed = .5;
+    } 
+    else if (this.keyState[39]) {
+      newAnim = this.sprite.walkAnim;
+      this.sprite.animationSpeed = .2;
+    }
+    else {
+      newAnim = this.sprite.idleAnim;
+      this.sprite.animationSpeed = .15;
+    }
+    
+    if (newAnim !== this.sprite.currentAnimation) {
+      this.sprite.currentAnimation = newAnim; 
+      this.sprite.textures = this.sprite.currentAnimation.textures;  
+      this.sprite.gotoAndStop(0);
+      this.sprite.gotoAndPlay(0);
+      console.log(this.sprite.animationSpeed)
+    }
   }
 }
 
