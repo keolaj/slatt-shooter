@@ -2,7 +2,7 @@ class Player {
   constructor() {
     let sheet = PIXI.loader.resources["assets/imgs/playersprite/spritesheet.json"].spritesheet;
     console.log(sheet.animations);
-    player = new PIXI.extras.AnimatedSprite(sheet.animations["walking"], true);
+    player = new PIXI.extras.AnimatedSprite(sheet.animations["idle"], true);
     player.play()
     player.animationSpeed = .2;
     player.anchor.x = 0.5;
