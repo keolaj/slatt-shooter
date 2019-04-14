@@ -1,3 +1,6 @@
+var size = [1334, 750];
+var ratio = size[0] / size[1];
+  
 //Aliases
 let Application = PIXI.Application,
   Container = PIXI.Container,
@@ -26,6 +29,24 @@ PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
 // Creates canvas element, pushes to DOM
 document.body.appendChild(app.view);
 
+
+function resize() {
+  if (window.innerWidth / window.innerHeight >= ratio) {
+      var w = window.innerHeight * ratio;
+      var h = window.innerHeight;
+  } else {
+      var w = window.innerWidth;
+      var h = window.innerWidth / ratio;
+  }
+  app.view.style.width = w + 'px';
+  app.view.style.height = h + 'px';
+}
+window.onresize = function(event) {
+  resize();
+};
+
+resize();
+
 // Variables
 var tink; //new Tink(PIXI, app.renderer.view);
 var mousePos = app.renderer.plugins.interaction.mouse.global;
@@ -46,6 +67,7 @@ var gameLoopID = undefined;
 var state = play;
 var delta = app.ticker.deltaTime;
 let b = new PIXI.extras.Bump();
+
 
 
 PIXI.loader.add([
