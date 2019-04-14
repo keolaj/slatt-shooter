@@ -14,7 +14,7 @@ class Enemy {
             this.sprite.position.set(app.renderer.width * 1.05, app.renderer.height - 500 * Math.random() - (app.renderer.height * .1));
             this.sprite.scale.set(0.4, 0.4)
 
-            if (!document[hidden]) {
+            if (!document[hidden] && !pause) {
                 Enemy.list.push(this.sprite);
                 entities.addChildAt(this.sprite, 0);
             }

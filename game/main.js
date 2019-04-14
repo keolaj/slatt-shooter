@@ -1,7 +1,4 @@
-//variables for resize
-var size = [1334, 750];
-var ratio = size[0] / size[1];
-  
+
 //Aliases
 let Application = PIXI.Application,
   Container = PIXI.Container,
@@ -14,9 +11,11 @@ let Application = PIXI.Application,
   Rectangle = PIXI.Rectangle,
   Text = PIXI.Text,
   TextStyle = PIXI.TextStyle;
+const canvas = document.getElementById("canvas")
 const app = new PIXI.Application({
   width: 1334, // default: 800
   height: 750, // default: 600
+  view: canvas,
   antialias: true, // default: false
   transparent: false, // default: false
   resolution: 1 // default: 1
@@ -30,6 +29,10 @@ PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
 document.body.appendChild(app.view);
 
 //resize
+//variables for resize
+var size = [1334, 750];
+var ratio = size[0] / size[1];
+  
 function resize() {
   if (window.innerWidth / window.innerHeight >= ratio) {
       var w = window.innerHeight * ratio;
@@ -46,8 +49,8 @@ window.onresize = function(event) {
 };
 resize();
 
+
 // Variables
-var tink; //new Tink(PIXI, app.renderer.view);
 var mousePos = app.renderer.plugins.interaction.mouse.global;
 var player;
 var enemy;
@@ -64,6 +67,9 @@ var vid = document.getElementsByTagName("audio")
 var gameOver = false;
 var gameLoopID = undefined;
 var state = play;
+var pause = false;
+var pauseButton = undefined;
+var buttonP
 var delta = app.ticker.deltaTime;
 let b = new PIXI.extras.Bump();
 
@@ -73,7 +79,11 @@ PIXI.loader.add([
   "assets/imgs/playersprite/spritesheet.json",
   "assets/imgs/playersprite/spritesheet.png",
   "assets/imgs/shrek.png",
-  "assets/imgs/laser.png"
+  "assets/imgs/laser.png",
+  "assets/imgs/right.png",
+  "assets/imgs/pause.png",
+  "assets/imgs/audioOn.png",
+  "assets/imgs/audioOff.png"
 ]).load(loadFinished);
 
 function loadFinished() {
@@ -82,8 +92,6 @@ function loadFinished() {
 }
 
 function init() {
-  tink = new Tink(PIXI, app.renderer.view);
-  tink.makePointer();
   entities = new Container();
   gui = new Container();
   app.stage.addChild(entities);
@@ -92,24 +100,25 @@ function init() {
   state = play;
   player = new Player();
   enemy = new Enemy();
+  buttonP = new makeButton();
   console.log("entities", entities.children);
 
 }
 
 function gameLoop() {
-  tink.update();
-   state(delta);
-  enemy.update();
-  Laser.list.map((element) =>
-    {
-        element.update();
-    });
-  // Get mouse pos
-  mousePos = app.renderer.plugins.interaction.mouse.global;
-
-  // Call next animation frame
+  if (!pause) {
+    state(delta);
+    enemy.update();
+    Laser.list.map((element) =>
+      {
+          element.update();
+      });
+    // Get mouse pos
+    //mousePos = app.renderer.plugins.interaction.mouse.global;
+  
+    collision();
+  }
   requestAnimationFrame(gameLoop);
-  collision();
 }
 function play(delta) {
   player.update(delta);
