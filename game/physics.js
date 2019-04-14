@@ -11,7 +11,7 @@ collision = function() {
                     element.destroy();
                     array.splice(index, 1);
                     Laser.list[x].sprite.destroy();
-                    Laser .list.splice(x, 1); 
+                    Laser .list.splice(x, 1);
                     fireBullets += 2;
                 }
             }

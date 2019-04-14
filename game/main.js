@@ -1,3 +1,4 @@
+//variables for resize
 var size = [1334, 750];
 var ratio = size[0] / size[1];
   
@@ -24,12 +25,11 @@ app.renderer.view.style.position = "absolute";
 app.renderer.view.style.display = "block";
 app.renderer.backgroundColor = 0x22A7F0;
 app.renderer.autoResize = true;
-//app.renderer.resize(window.innerWidth, window.innerWidth * .5625)
 PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
 // Creates canvas element, pushes to DOM
 document.body.appendChild(app.view);
 
-
+//resize
 function resize() {
   if (window.innerWidth / window.innerHeight >= ratio) {
       var w = window.innerHeight * ratio;
@@ -44,7 +44,6 @@ function resize() {
 window.onresize = function(event) {
   resize();
 };
-
 resize();
 
 // Variables
