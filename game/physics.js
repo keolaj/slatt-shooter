@@ -21,10 +21,14 @@ collision = function() {
 gravity = function() {
     
 }
-
 class makeButton {
     constructor() {
-        this.sprite = new PIXI.Sprite(PIXI.loader.resources["assets/imgs/pause.png"].texture);
+        const pics = [
+            resources["assets/imgs/pause.png"].texture,
+            resources["assets/imgs/right.png"].texture
+        ]
+
+        this.sprite = new PIXI.extras.AnimatedSprite(pics);
         this.sprite.buttonMode = true;
         this.sprite.interactive = true;
         this.sprite.anchor.x = .5;
@@ -39,25 +43,22 @@ class makeButton {
         this.sprite.on('pointerout', this.onButtonOut);
     
 
-
-
-        //vars for 
-
-
-
-
-
-
-
         gui.addChild(this.sprite);
     }
-
 
 
     onButtonDown() {
         this.isdown = true;
         if (this.isOver) {
             pause = !pause;
+            console.log(buttonP.sprite.texture);
+            if (pause) {
+                buttonP.sprite.texture = resources["assets/imgs/right.png"].texture;
+            } else {
+                buttonP.sprite.texture = resources["assets/imgs/pause.png"].texture;
+            }
+
+
         }
     }
 
