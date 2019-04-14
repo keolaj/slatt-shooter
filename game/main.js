@@ -25,7 +25,7 @@ app.renderer.view.style.display = "block";
 app.renderer.backgroundColor = 0x22A7F0;
 app.renderer.autoResize = true;
 PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
-// Creates canvas element, pushes to DOM
+// Creat es canvas element, pushes to DOM
 document.body.appendChild(app.view);
 
 //resize
@@ -68,8 +68,10 @@ var gameOver = false;
 var gameLoopID = undefined;
 var state = play;
 var pause = false;
+var mBool = false;
 var pauseButton = undefined;
-var buttonP
+var buttonP;
+var buttonM;
 var delta = app.ticker.deltaTime;
 let b = new PIXI.extras.Bump();
 
@@ -82,8 +84,8 @@ PIXI.loader.add([
   "assets/imgs/laser.png",
   "assets/imgs/right.png",
   "assets/imgs/pause.png",
-  "assets/imgs/audioOn.png",
-  "assets/imgs/audioOff.png"
+  "assets/imgs/musicOff.png",
+  "assets/imgs/musicOn.png",
 ]).load(loadFinished);
 
 function loadFinished() {
@@ -100,8 +102,8 @@ function init() {
   state = play;
   player = new Player();
   enemy = new Enemy();
-  buttonP = new makeButton();
-  console.log("entities", entities.children);
+  buttonP = new playButton();
+  buttonM = new musicButton();
 
 }
 
