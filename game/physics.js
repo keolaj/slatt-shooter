@@ -7,7 +7,7 @@ collision = function() {
     if (Laser.list[0] !== undefined && Enemy.list[0] !== undefined) {
         for (y in Enemy.list) {
             for (x in Laser.list) {
-                if (b.hit(Enemy.list[y].sprite, Laser.list[x].sprite)) {
+                if (b.hit(Enemy.list[y], Laser.list[x].sprite)) {
                     Enemy.list[y].destroy();
                     Enemy.list.splice(y, 1);
                     Laser.list[x].sprite.destroy();
@@ -16,8 +16,9 @@ collision = function() {
                 }
             }
         }
-    }
+    }    
 }
+
 gravity = function() {
     
 }
